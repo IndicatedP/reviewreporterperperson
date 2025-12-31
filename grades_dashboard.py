@@ -525,6 +525,12 @@ def main():
 
     # Sidebar
     st.sidebar.title("Data Source")
+
+    # Cache clear button
+    if st.sidebar.button("🔄 Clear Cache & Reload"):
+        st.cache_data.clear()
+        st.rerun()
+
     data_source = st.sidebar.radio("Choose data source", ["Upload PDF Files", "Use Sample Data (Oct vs Dec 2025)"])
 
     st.sidebar.markdown("---")
