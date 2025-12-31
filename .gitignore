@@ -1,0 +1,17 @@
+# OS files
+.DS_Store
+
+# PDF files (contain private data)
+*.pdf
+
+# Test files
+test_*.html
+
+# Python
+__pycache__/
+*.pyc
+.env
+
+# IDE
+.vscode/
+.idea/

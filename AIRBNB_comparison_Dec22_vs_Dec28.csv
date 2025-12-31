@@ -1,0 +1,194 @@
+Ligne,Nom,Note Dec 22,Note Dec 28,Difference,Evolution,Comments Dec 22,Comments Dec 28
+1,Urban Flat 01 - Charmant appartement de 2 chambres,4.22,4.30,+0.08,↑ Improved,9,10
+2 A,02 - Joli appartement 4 chambres à Paris,4.36,4.36,0,= Stable,22,22
+2 B,Appartement urbain 02 - Bel appartement de 4 chambres,3.67,3.67,0,= Stable,3,3
+3 A,03 - Bel appartement urbain Montorgueil,4.33,4.33,0,= Stable,48,48
+3 B,UrbanFlat 03 - Appartement 4 chambres Paris Centre,4.5,4.5,0,= Stable,4,4
+4 A,UrbanFlat 04 - Appartement au centre 2 Chambres,X,X,N/A,No data,2,2
+4 B,UrbanFlat 04 - Appartement Parisien de 2 chambres,4.25,4.4,+0.15,↑ Improved,4,5
+5 B,Urban Flat 05 - Bel appartement à Paris,X,X,N/A,No data,1,1
+6,Urban Flat 06 - Charmant 2 Bdr à Paris,4.83,4.83,0,= Stable,6,6
+7 B,Appartement urbain 07 - Appartement Grands Boulevards,X,X,N/A,No data,1,1
+7 A,Urban Flat 07 - Appartement central 1 chambre,4.45,4.45,0,= Stable,11,11
+8 A,Urban Flat 08 - L'appartement panoramique à Paris,3.88,3.88,0,= Stable,8,8
+8 B,UrbanFlat 08 - Appartement Magenta Design,X,X,N/A,No data,1,1
+9 A,Appartement urbain 09 - Triplex design Champs-Elysees,4.11,4.10,-0.01,↓ Degraded,9,10
+9 B,UrbanFlat 09 - Triplex Champs-Elysees,X,X,N/A,No data,1,1
+11 A,11 - Studio à côté des Champs-Elysees,3.89,4.0,+0.11,↑ Improved,9,10
+11 B,UrbanFlat 11 - Studio Wagram Pereire,X,X,N/A,= New comment,1,2
+13 A,Urban Flat 13 - Bel appartement 2 chambres,4.33,4.33,0,= Stable,24,24
+14 B,Urban Flat 14 - Charmant appartement 3 chambres,4.43,4.43,0,= Stable,7,7
+14 A,14 - Appartement de luxe urbain Tour Eiffel,4.35,4.35,0,= Stable,34,34
+15,Appartement urbain 15 - Coco Chanel Montorgueil,4.30,4.30,0,= Stable,10,10
+17 B,Urban Flat 17 - Sublime appartement de 3 chambres,4.17,4.17,0,= Stable,12,12
+17 A,Urban Flat 17 - Joli appartement de 3 chambres,4.60,4.60,0,= Stable,10,10
+18 B,Urban Flat 18 - Charmante maison parisienne 2 chambres,X,X,N/A,No data,1,1
+19,Urban Flat 19 - Charmant appartement à Montorgueil,3.71,3.71,0,= Stable,7,7
+21 A,Urban Flat 21 - Charmant duplex à Montorgueil,4.31,4.36,+0.05,↑ Improved,13,14
+21 B,Appartement urbain 21 - Duplex à Montorgueil,3.33,3.33,0,= Stable,3,3
+23 A,Urban Flat 23 - Charmant appartement parisien 3 chambres,X,X,N/A,No data,1,1
+23 B,UrbanFlat 23 - Appartement Central avec Balcon,5.0,4.8,-0.2,↓ Degraded,4,5
+25,Urban Flat 25 - Studio Duplex Marvel Paris centre,4.0,4.0,0,= Stable,6,6
+31,UrbanFlat 31 - Appartement au centre de Paris,X,X,N/A,No data,1,1
+31 B,Urban Flat 31 - Triplex au centre de Paris,4.0,4.0,0,= Stable,12,12
+33,Urban Flat 33 - Charmant appartement près des Champs-Elysees,4.33,4.35,+0.02,↑ Improved,51,52
+34 A,Appartement urbain 34 - Magnifique 3 chambres Paris Louvre,3.94,3.94,0,= Stable,17,17
+34 B,Urban Flat 34 - Superbe 3 chambres Paris Louvre,4.6,4.6,0,= Stable,5,5
+35 A,35 - Joli appartement urbain près des Grands Boulevards,4.0,4.0,0,= Stable,68,68
+35 B,UrbanFlat 35 - Grands Boulevards,4.0,4.0,0,= Stable,3,3
+40 B,UrbanFlat 40 - Appartement 2 chambres au centre,3.86,3.86,0,= Stable,7,7
+40 A,Urban Flat 40 - Charmant Apartment centre de Paris,X,X,N/A,= New comment,1,2
+41 A,UrbanFlat 41 - Disneyland in Paris - Montorgueil,4.31,4.31,0,= Stable,16,16
+42,Urban Flat 42 - Game of Thrones Paris,4.5,4.5,0,= Stable,4,4
+42 B,Urban Flat 42 - Appartement Game of Thrones Paris,3.40,3.40,0,= Stable,5,5
+44 B,UrbanFlat 44 - Appartement au centre de Paris,X,X,N/A,No data,1,1
+44 A,Urban Flat 44 - Charmant appartement parisien,4.67,4.67,0,= Stable,6,6
+52 A,Urban Flat 52 - Appartement 2 chambres central,X,X,N/A,No data,2,2
+55 A,UrbanFlat 55 - Atelier Triplex Marylin Monroe,4.0,4.0,0,= Stable,3,3
+55 B,UrbanFlat 55 - Appartement Marylin Monroe dans le centre,2.75,2.75,0,= Stable,4,4
+57 A,Urban Flat 57 - Appartement parisien de luxe 4 chambres,4.67,4.67,0,= Stable,12,12
+60 A,Urban Flat 60 - Sublime 3bdr Parisian Flat,5.0,5.0,0,= Stable,3,3
+60 B,Urban Flat 60 - Sublime appartement parisien à Paris,X,X,N/A,No data,1,1
+61 A,Urban Flat 61 - Appartement parisien de luxe 3 chambres,4.37,4.37,0,= Stable,19,19
+62 B,Urban Flat 62 - Bel appartement Triangle d'Or,4.5,4.5,0,= Stable,6,6
+62 A,Appartement urbain 62 - Charmant 3 chambres Triangle d'Or,4.33,4.33,0,= Stable,6,6
+63 B,Appartement urbain 63 - Bel Mermoz,X,X,N/A,No data,2,2
+63 A,Urban Flat 63 - Bel appartement 3 chambres Champs-El,4.3,4.36,+0.06,↑ Improved,10,11
+64 B,Urban Flat 64 - Appartement sublime près Champs-Elysees,4.22,4.22,0,= Stable,9,9
+64 A,64 - Appartement de luxe urbain près Champs-Elysees,4.27,4.27,0,= Stable,33,33
+66 A,Urban Flat 66 - Joli 3 chambres à Paris,X,X,N/A,No data,1,1
+66 B,66 - Atelier Paris Fidelite,4.67,4.67,0,= Stable,3,3
+67 A,Urban Flat 67 - Spacieux appartement parisien,4.63,4.63,0,= Stable,30,30
+67 B,Urban Flat 67 - Sublime appartement parisien,4.83,4.83,0,= Stable,6,6
+68 A,Appartement urbain 68 - Charmant appartement Rolling Stones,4.23,4.23,0,= Stable,13,13
+69 A,Urban Flat 69 - Bel appartement parisien,3.4,3.4,0,= Stable,5,5
+69 B,UrbanFlat 69 - Large Appartement Paris Centre,4.45,4.45,0,= Stable,11,11
+70 B,UrbanFlat 70 - Appartement Parisien spacieux,4.2,4.2,0,= Stable,5,5
+70 A,Urban Flat 70 - Authentique appartement parisien 3 chambres,4.26,4.26,0,= Stable,31,31
+71 B,Urban Flat 71 - Appartement incroyable dans le Marais,X,X,N/A,No data,2,2
+71 A,71 - Appartement urbain incroyable dans le Marais,4.14,4.14,0,= Stable,29,29
+72 A,Urban Flat 72 - Joli appartement 3 chambres Triangle d,4.57,4.57,0,= Stable,7,7
+73 A,Urban Flat 73 - Spacieux appartement parisien 4 chambres,4.34,4.34,0,= Stable,35,35
+74 A,Appartement urbain 74 - Le Marais Disney,4.75,4.75,0,= Stable,8,8
+75 A,Urban Flat 75 - Sublime 3bdr Flat near Les Jardins,4.31,4.31,0,= Stable,36,36
+76 A,Urban Flat 76 - Joli appartement 2 chambres Marais,4.64,4.64,0,= Stable,11,11
+76 B,UrbanFlat 76 - Le Marais & République Appartement,X,X,N/A,No data,1,1
+77 B,UrbanFlat 77 - Grand Appartement Place République,X,X,N/A,No data,1,1
+78 B,Urban Flat 78 - Bel appartement 3 chambres Marais,4.0,4.0,0,= Stable,9,9
+79 A,Urban Flat 79 - Bel appartement 4 chambres Le Mar,4.25,4.25,0,= Stable,8,8
+79 B,UrbanFlat 79 - Grand appartement proche Le Marais,4.33,4.33,0,= Stable,3,3
+80 B,Urban Flat 80 - Appartement Fashion Week de Paris,4.0,4.0,0,= Stable,3,3
+80 A,UrbanFlat 80 - Duplex Parisien dans le centre,3.33,3.33,0,= Stable,3,3
+81 A,Appartement urbain 81 - Paris Luxe Sebastopol,3.87,4.0,+0.13,↑ Improved,15,18
+86 A,Urban Flat 86 - Bel appartement 2 chambres Paris,4.27,4.27,0,= Stable,22,22
+86 B,UrbanFlat 86 - Charmant Appartement 2 chambres,X,X,N/A,No data,2,2
+89 B,UrbanFlat 89 - Appartement au centre de Paris,X,X,N/A,No data,2,2
+89 A,Appartement urbain 89 - Charmant appartement 3 chambres,3.20,3.20,0,= Stable,5,5
+90,Urban Flat 90 - Appartement design Karl Lagerfeld,3.86,3.86,0,= Stable,14,14
+91 A,Urban Flat 91 - Bel appartement Picasso dans le Marais,4.27,4.27,0,= Stable,15,15
+91 B,UrbanFlat 91 - Appartement central dans le Marais,4.86,4.75,-0.11,↓ Degraded,7,8
+92 A,92 - Appartement urbain Montorgueil,4.6,4.6,0,= Stable,48,48
+93,93 - Appartement de luxe dans le Marais,4.36,4.38,+0.02,↑ Improved,25,26
+94 B,UrbanFlat 94 - Appartement élégant dans le centre,4.4,4.5,+0.1,↑ Improved,5,6
+96 A,Urban Flat 96 - Joli appartement parisien près Montorgu,4.33,4.33,0,= Stable,3,3
+96 B,96 - Urban Musée Grévin,X,X,N/A,No data,1,1
+97 A,Urban Flat 97 - Appartement parisien 1 chambre,4.33,4.33,0,= Stable,6,6
+98 A,98 - Fabuleux appartement au coeur de Paris,4.39,4.49,+0.1,↑ Improved,39,39
+99 A,Urban Flat 99 - Spacieux appartement 6 chambres Paris,4.17,4.17,0,= Stable,12,12
+99 B,UrbanFlat 99 - Sublime Grand Appartement Central,4.40,4.40,0,= Stable,5,5
+100 A,Appartement urbain 100 - Joli 2 chambres Beaubourg Mara,4.56,4.56,0,= Stable,9,9
+101 A,Appartement urbain 101 - Charmant appartement à Paris,X,X,N/A,No data,2,2
+101 B,101 - Centre urbain de Pompidou,X,X,N/A,No data,2,2
+102 A,102 - Opera urbain Picasso,4.57,4.57,0,= Stable,75,75
+103 A,Appartement urbain 103 - Appartement spacieux Grands Boulevards,4.64,4.64,0,= Stable,11,11
+104 B,UrbanFlat 104 - Appartement 4 Chambres Opera,X,X,N/A,No data,2,2
+104 A,Appartement urbain 104 - Appartement parfait pour l'opera,4.32,4.32,0,= Stable,19,19
+105 B,Urban Flat 105 - Appartement 4 chambres Haussmann Opera,4.40,4.40,0,= Stable,10,10
+106 A,106 - Appartement de luxe urbain Opera,4.26,4.26,0,= Stable,66,66
+107 A,107 - Urban Luxury Opera Rock,4.25,4.25,0,= Stable,24,24
+107 B,Appartement urbain 107 - Sublime 4 chambres Opera Rock,4.42,4.42,0,= Stable,12,12
+108 B,Urban Flat 108 - Joli appartement parisien 4 chambres,3.0,3.0,0,= Stable,4,4
+108 A,UrbanFlat 108 - Appartement central de 4 chambres,X,X,N/A,No data,1,1
+110 B,Appartement urbain 110 - Luxe 3 chambres Galeries Lafayette,4.43,4.43,0,= Stable,7,7
+111 B,Urban Flat 111 - Bel appartement urbain Madeleine,3.86,3.86,0,= Stable,7,7
+111 A,UrbanFlat 111 - Madeleine Galeries Lafayette flat,4.0,4.0,0,= Stable,4,4
+112,UrbanFlat 112 - Appartement 1 chambre Saint Michel,4.13,4.13,0,= Stable,8,8
+113 B,UrbanFlat 113 - 2 Chambres au centre de Paris,4.29,4.29,0,= Stable,7,7
+114,UrbanFlat 114 - Charmant atelier Parisien St Denis,X,X,N/A,No data,1,1
+115 A,Appartement urbain 115 A - Appartement tendance Louis Vuitton,4.0,4.0,0,= Stable,11,11
+117 A,Urban Flat 117 - Charmant appartement 3 chambres,4.28,4.28,0,= Stable,36,36
+118 A,118 - Appartement de luxe urbain La Sorbonne,4.36,4.36,0,= Stable,36,36
+118 B,Urban Flat 118 - Appartement de luxe 4 chambres Saint Germ,4.63,4.63,0,= Stable,8,8
+119 B,Urban Flat 119 - Appartement spacieux 5 chambres Paris,X,X,N/A,No data,2,2
+119 A,119 - Appartement urbain spacieux centre de Paris,4.62,4.62,0,= Stable,69,69
+120 B,UrbanFlat 120 - Charmant appart dans le Marais,X,X,N/A,No data,2,2
+121,Appartement urbain 121 - Magnifique appartement Montorguei,4.53,4.54,+0.01,↑ Improved,34,35
+122 B,UrbanFlat 122 - Palestro 5 Chambres Central,3.8,3.8,0,= Stable,5,5
+122 A,UrbanFlat 122 - Grand Appartement - Paris Center,X,X,N/A,= New comment,1,2
+123 A,123 - Appartement urbain à Montorgueil,4.41,4.41,0,= Stable,73,73
+124 A,124 - Appartement urbain fabuleux,4.38,4.38,0,= Stable,45,45
+124 B,UrbanFlat 124 - Spacieux appartement coeur de Paris,X,X,N/A,No data,2,2
+126 A,126 - Superbe 3 chambres urbain Montorgueil,4.22,4.22,0,= Stable,18,18
+127 A,UrbanFlat 127 - Grand appartement a Montorgueil,X,X,N/A,No data,1,1
+127 B,Appartement urbain 127 - Magnifique Montorgueil,X,X,N/A,No data,1,1
+128 A,UrbanFlat 128 - Appartement Champs Elysees,3.0,3.67,+0.67,↑ Improved,4,6
+129 A,Urban Flat 129 - Art Love Champs-Elysees,3.4,3.4,0,= Stable,5,5
+129 B,UrbanFlat 129 - Appartement moderne Champs-Elysees,X,X,N/A,No data,2,2
+130 A,130 - Appartement urbain neuf 110 m2 à Montorgueil,4.47,4.47,0,= Stable,15,15
+131 B,UrbanFlat 131 - Ponceau Appartement dans le centre,5.0,5.0,0,= Stable,3,4
+132 A,Urban Flat 132 - Bel appartement 4 chambres Montorgue,4.67,4.67,0,= Stable,3,3
+132 B,Urban Flat 132 - Bel appartement 4 chambres Paris,4.27,4.27,0,= Stable,15,15
+133 A,Urban Flat 133 - Superbe appartement 4 chambres Montorgueil,4.5,4.56,+0.06,↑ Improved,8,9
+133 B,UrbanFlat 133 - Appartement central de 4 chambres,X,X,N/A,No data,1,1
+134 B,134 - Appartement 4 chambres Montorgueil,X,X,N/A,No data,2,2
+134 A,134 - Magnifique appartement urbain à Montorgueil,4.50,4.50,0,= Stable,16,16
+135 A,135 A - Appartement urbain cinq étoiles centre Par,4.52,4.52,0,= Stable,54,54
+136 A,Urban Flat 136 - Duplex 4 chambres luxe centre P,4.18,4.18,0,= Stable,22,22
+138 B,Urban Flat 138 - Duplex à Saint-Germain,4.5,4.5,0,= Stable,6,6
+138 A,138 - Appartement de luxe urbain à Saint-Germain,4.43,4.42,-0.01,↓ Degraded,63,64
+139 A,139 - Appartement urbain duplex Saint-Germain,4.65,4.65,0,= Stable,52,52
+139 B,UrbanFlat 139 - Duplex St Germain/ St Michel,X,X,N/A,No data,2,2
+140 A,Urban Flat 140 - Bel appartement près Saint-Germain,4.33,4.33,0,= Stable,3,3
+140 B,140 - Duplex urbain près de Saint-Germain des Pres,X,X,N/A,No data,1,1
+141 B,Appartement urbain 141 - Bel appartement 3 chambres Champs,4.57,4.57,0,= Stable,7,7
+148,Studio 08 - Paris Faubourg,X,X,N/A,No data,1,1
+153,153 - Joli appartement urbain centre de Paris,4.54,4.54,0,= Stable,24,24
+154,Urban Flat 154 - Pretty 2 Bdr dans le centre de Paris,4.40,4.40,0,= Stable,5,5
+155,Urban Flat 155 - Appartement de luxe 2 chambres Paris,4.57,4.57,0,= Stable,7,7
+156,Appartement urbain 156 - Appartement Ysl à Montorgueil,4.58,4.58,0,= Stable,24,24
+157 A,Appartement urbain 157 - Appartement Coco Chanel Montorgueil,4.60,4.60,0,= Stable,10,10
+158 A,158 - Appartement urbain Louis Vuitton à Montorgueil,4.48,4.48,0,= Stable,44,44
+160,160 - Fashion Week urbaine Paris Vuitton,4.32,4.32,0,= Stable,50,50
+160 B,UrbanFlat 160 - Fashion Week Triplex Central,3.75,3.75,0,= Stable,4,4
+161 A,Urban Flat 161 - Sublime appartement luxe 4 chambres Paris,4.25,4.25,0,= Stable,12,12
+164,UrbanFlat 164 - Studio Central Paris St.Martin,X,X,N/A,No data,1,1
+165,UrbanFlat 165 - Studio Triangle d'Or Boetie,3.75,3.75,0,= Stable,4,4
+165 B,UrbanFlat 165 - Studio Champs elysees Boetie,2.75,2.75,0,= Stable,4,4
+166,Appartement urbain 166 - Appartement luxe 4 chambres centre,4.18,4.18,0,= Stable,11,11
+167,Urban Flat 167 - Appartement de luxe 1 chambre Paris,5.0,5.0,0,= Stable,3,3
+168,Urban Flat 168 - Spacieux appartement 1 chambre P,4.22,4.22,0,= Stable,9,9
+169,Appartement urbain 169 - Joli appartement Bercy Coriolis,4.12,4.12,0,= Stable,17,17
+170,Urban Flat 170 - Sublime appartement centre de Paris,4.71,4.71,0,= Stable,24,24
+173,Urban Flat 173 - Atelier Gaite Montparnasse,4.0,3.67,-0.33,↓ Degraded,5,6
+174,Appartement urbain 174 - Vuitton Saint-Denis,4.75,4.75,0,= Stable,4,4
+175,Appartement urbain 175 - Loft St Denis,3.0,3.0,0,= Stable,4,4
+176,Urban Flat 176 - Charmant Duplex Paris Centre,4.17,4.17,0,= Stable,6,6
+178 B,Urban Flat 178 - Appartement central 2 chambres,X,X,N/A,No data,1,1
+180,Urban Flat 180 - Charmant Appartement au Coeur du,X,X,N/A,No data,2,2
+188 B,Urban Flat 188 - Superbe appartement 4 chambres Paris,4.55,4.55,0,= Stable,20,20
+189,Appartement urbain 189 - Atelier Montparnasse Vuitton,4.4,4.4,0,= Stable,5,5
+191 A,Appartement Madeleine - 4 Chambres spacieuses,5.0,5.0,0,= Stable,24,24
+192,Urban Flat 192 - Appartement 1 chambre au centre,5.0,5.0,0,= Stable,4,4
+193,Appartement urbain 193 - Barbie à Paris,3.20,3.20,0,= Stable,5,5
+194 A,Urban Flat 194 - Spacieux 3 chambres Montmartre,4.0,4.0,0,= Stable,6,6
+194 B,UrbanFlat 194 - 3 Chambres Opera Montmartre,X,X,N/A,No data,2,2
+195 A,Appartement urbain 195 - Triplex Saint Denis,X,X,N/A,No data,1,1
+196,Appartement urbain - 196 Saint Honore,4.33,4.33,0,= Stable,9,9
+197,Appartement Saint Honore Champs Elysees,5.0,5.0,0,= Stable,15,15
+199,Urban Flat 199 - Appartement Central 5 Chambres,4.67,4.67,0,= Stable,9,9
+201,UrbanFlat 201 - 249 Saint-Denis Sd1,X,X,N/A,= New comment,0,1
+205,UrbanFlat 205 - Joli studio central x2 personnes,X,X,N/A,No data,1,1
+210,UrbanFlat 210 - Joli studio central x2 personnes,X,X,N/A,No data,1,1
+106 X 107,106X107 - Appartement double spacieux,X,X,N/A,No data,1,1
+138 X 139,138X139 - Grand appartement St Germain,X,X,N/A,No data,1,1
+17 X 18,17X18 - Double flat urbain Paris,X,X,N/A,No data,1,1

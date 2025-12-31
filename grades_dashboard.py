@@ -1,0 +1,642 @@
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+import altair as alt
+import numpy as np
+import pdfplumber
+import re
+import io
+from pathlib import Path
+
+# Page configuration
+st.set_page_config(
+    page_title="Apartment Grades Dashboard",
+    page_icon="🏠",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# Get the directory where this script is located
+SCRIPT_DIR = Path(__file__).parent
+
+def extract_booking_data_from_pdf(pdf_file):
+    """Extract apartment data from Booking.com PDF."""
+    data = []
+    with pdfplumber.open(pdf_file) as pdf:
+        for page in pdf.pages:
+            tables = page.extract_tables()
+            for table in tables:
+                for row in table:
+                    if row and len(row) >= 3:
+                        # Look for rows with apartment data
+                        ligne = str(row[0]).strip() if row[0] else ''
+                        nom = str(row[1]).strip() if row[1] else ''
+                        note = str(row[2]).strip() if row[2] else ''
+                        comments = str(row[3]).strip() if len(row) > 3 and row[3] else '0'
+
+                        # Skip header rows
+                        if ligne.lower() in ['ligne', 'line', ''] or nom.lower() in ['nom', 'name', '']:
+                            continue
+
+                        # Try to parse note as float
+                        try:
+                            note_val = float(note.replace(',', '.')) if note and note != 'X' else None
+                        except:
+                            note_val = None
+
+                        try:
+                            comments_val = int(re.sub(r'[^\d]', '', comments)) if comments else 0
+                        except:
+                            comments_val = 0
+
+                        if nom and nom != 'None':
+                            data.append({
+                                'Ligne': ligne,
+                                'Nom': nom,
+                                'Note': note_val,
+                                'Comments': comments_val
+                            })
+    return pd.DataFrame(data)
+
+def extract_airbnb_data_from_pdf(pdf_file):
+    """Extract apartment data from Airbnb PDF."""
+    data = []
+    with pdfplumber.open(pdf_file) as pdf:
+        for page in pdf.pages:
+            tables = page.extract_tables()
+            for table in tables:
+                for row in table:
+                    if row and len(row) >= 3:
+                        ligne = str(row[0]).strip() if row[0] else ''
+                        nom = str(row[1]).strip() if row[1] else ''
+                        note = str(row[2]).strip() if row[2] else ''
+                        comments = str(row[3]).strip() if len(row) > 3 and row[3] else '0'
+
+                        if ligne.lower() in ['ligne', 'line', ''] or nom.lower() in ['nom', 'name', '']:
+                            continue
+
+                        try:
+                            note_val = float(note.replace(',', '.')) if note and note != 'X' else None
+                        except:
+                            note_val = None
+
+                        try:
+                            comments_val = int(re.sub(r'[^\d]', '', comments)) if comments else 0
+                        except:
+                            comments_val = 0
+
+                        if nom and nom != 'None':
+                            data.append({
+                                'Ligne': ligne,
+                                'Nom': nom,
+                                'Note': note_val,
+                                'Comments': comments_val
+                            })
+    return pd.DataFrame(data)
+
+def create_comparison_df(df_before, df_after, before_label, after_label):
+    """Create comparison dataframe from two period dataframes."""
+    # Merge on Nom (apartment name)
+    merged = pd.merge(
+        df_before[['Ligne', 'Nom', 'Note', 'Comments']],
+        df_after[['Nom', 'Note', 'Comments']],
+        on='Nom',
+        how='outer',
+        suffixes=(f' {before_label}', f' {after_label}')
+    )
+
+    # Fill missing Ligne from after df if needed
+    if 'Ligne' not in merged.columns:
+        merged['Ligne'] = ''
+
+    before_col = f'Note {before_label}'
+    after_col = f'Note {after_label}'
+
+    # Calculate difference
+    def calc_diff(row):
+        if pd.isna(row[before_col]) and pd.notna(row[after_col]):
+            return None  # New rating
+        elif pd.notna(row[before_col]) and pd.notna(row[after_col]):
+            return round(row[after_col] - row[before_col], 2)
+        return None
+
+    merged['Difference'] = merged.apply(calc_diff, axis=1)
+
+    # Determine evolution
+    def get_evolution(row):
+        if pd.isna(row[before_col]) and pd.notna(row[after_col]):
+            return '★ New Rating'
+        elif pd.isna(row['Difference']):
+            return 'N/A'
+        elif row['Difference'] > 0:
+            return '↑ Improved'
+        elif row['Difference'] < 0:
+            return '↓ Degraded'
+        else:
+            return '→ Stable'
+
+    merged['Evolution'] = merged.apply(get_evolution, axis=1)
+
+    return merged, before_col, after_col
+
+def parse_difference(val):
+    """Parse difference values, handling +/- prefixes and text values."""
+    if pd.isna(val):
+        return None
+    val_str = str(val).strip()
+    # Handle text values
+    if val_str in ['NEW', 'N/A', '-', '']:
+        return None
+    # Remove + prefix if present (- is handled by float())
+    val_str = val_str.lstrip('+')
+    try:
+        return float(val_str)
+    except ValueError:
+        return None
+
+@st.cache_data
+def load_booking_data():
+    """Load and process Booking.com comparison data."""
+    df = pd.read_csv(SCRIPT_DIR / "BOOKING_comparison_Oct22_vs_Dec29.csv")
+
+    # Convert note columns to numeric, handling 'X' values
+    df['Note Oct 22'] = pd.to_numeric(df['Note Oct 22'], errors='coerce')
+    df['Note Dec 29'] = pd.to_numeric(df['Note Dec 29'], errors='coerce')
+    # Parse Difference column with custom function
+    df['Difference'] = df['Difference'].apply(parse_difference)
+
+    return df
+
+@st.cache_data
+def load_airbnb_data():
+    """Load and process Airbnb comparison data."""
+    df = pd.read_csv(SCRIPT_DIR / "AIRBNB_comparison_Oct23_vs_Dec28.csv")
+
+    # Convert note columns to numeric, handling 'X' values
+    df['Note Oct 23'] = pd.to_numeric(df['Note Oct 23'], errors='coerce')
+    df['Note Dec 28'] = pd.to_numeric(df['Note Dec 28'], errors='coerce')
+    # Parse Difference column with custom function
+    df['Difference'] = df['Difference'].apply(parse_difference)
+
+    return df
+
+def get_evolution_color(evolution):
+    """Return color based on evolution type."""
+    if '↑' in str(evolution) or 'Improved' in str(evolution):
+        return 'green'
+    elif '↓' in str(evolution) or 'Degraded' in str(evolution):
+        return 'red'
+    elif '★' in str(evolution) or 'New' in str(evolution):
+        return 'blue'
+    else:
+        return 'gray'
+
+def create_summary_metrics(df, oct_col, dec_col):
+    """Create summary metrics for the dashboard."""
+    total = len(df)
+
+    # Count by evolution
+    improved = len(df[df['Difference'] > 0])
+    degraded = len(df[df['Difference'] < 0])
+    stable = len(df[df['Difference'] == 0])
+    new_ratings = len(df[df['Evolution'].str.contains('★|New', na=False, regex=True)])
+
+    # With valid ratings
+    with_oct = df[oct_col].notna().sum()
+    with_dec = df[dec_col].notna().sum()
+
+    return {
+        'total': total,
+        'improved': improved,
+        'degraded': degraded,
+        'stable': stable,
+        'new_ratings': new_ratings,
+        'with_oct': with_oct,
+        'with_dec': with_dec
+    }
+
+def create_top_changes_chart_altair(df, oct_col, dec_col, title, top_n=10, improvements=True):
+    """Create comparison bar chart showing Oct vs Dec ratings."""
+    # Filter for valid differences
+    valid_df = df[df['Difference'].notna()].copy()
+
+    if improvements:
+        sorted_df = valid_df.nlargest(top_n, 'Difference')
+    else:
+        sorted_df = valid_df.nsmallest(top_n, 'Difference')
+
+    if len(sorted_df) == 0:
+        return None
+
+    # Prepare data for grouped bar chart
+    chart_data = []
+    for _, row in sorted_df.iterrows():
+        chart_data.append({
+            'Apartment': row['Nom'][:40] + '...' if len(row['Nom']) > 40 else row['Nom'],
+            'Full Name': row['Nom'],
+            'Period': 'October',
+            'Rating': row[oct_col] if pd.notna(row[oct_col]) else 0,
+            'Difference': row['Difference']
+        })
+        chart_data.append({
+            'Apartment': row['Nom'][:40] + '...' if len(row['Nom']) > 40 else row['Nom'],
+            'Full Name': row['Nom'],
+            'Period': 'December',
+            'Rating': row[dec_col] if pd.notna(row[dec_col]) else 0,
+            'Difference': row['Difference']
+        })
+
+    chart_df = pd.DataFrame(chart_data)
+
+    # Sort order for y-axis
+    apt_order = sorted_df['Nom'].apply(lambda x: x[:40] + '...' if len(x) > 40 else x).tolist()
+    if not improvements:
+        apt_order = apt_order[::-1]
+
+    chart = alt.Chart(chart_df).mark_bar().encode(
+        y=alt.Y('Apartment:N', sort=apt_order, title=''),
+        x=alt.X('Rating:Q', title='Rating'),
+        color=alt.Color('Period:N', scale=alt.Scale(
+            domain=['October', 'December'],
+            range=['#888888', 'green' if improvements else 'red']
+        )),
+        yOffset='Period:N',
+        tooltip=['Full Name:N', 'Period:N', 'Rating:Q', 'Difference:Q']
+    ).properties(
+        title=title,
+        width=400,
+        height=max(300, len(sorted_df) * 35)
+    )
+
+    return chart
+
+def create_scatter_plot(df, oct_col, dec_col, title, max_rating):
+    """Create scatter plot comparing October vs December ratings."""
+    valid_df = df[df[oct_col].notna() & df[dec_col].notna()].copy()
+
+    if len(valid_df) == 0:
+        return None
+
+    # Add color based on evolution
+    valid_df['Color'] = valid_df['Difference'].apply(
+        lambda x: 'Improved' if x > 0 else ('Degraded' if x < 0 else 'Stable')
+    )
+
+    fig = px.scatter(
+        valid_df,
+        x=oct_col,
+        y=dec_col,
+        color='Color',
+        hover_data=['Nom', 'Difference'],
+        title=title,
+        color_discrete_map={
+            'Improved': 'green',
+            'Degraded': 'red',
+            'Stable': 'gray'
+        }
+    )
+
+    # Add diagonal line (no change line)
+    fig.add_trace(
+        go.Scatter(
+            x=[0, max_rating],
+            y=[0, max_rating],
+            mode='lines',
+            name='No Change',
+            line=dict(dash='dash', color='black', width=1)
+        )
+    )
+
+    fig.update_layout(
+        xaxis_title=f"Rating {oct_col.split()[-1]}",
+        yaxis_title=f"Rating {dec_col.split()[-1]}",
+        height=500
+    )
+
+    return fig
+
+def create_distribution_chart(df, title):
+    """Create histogram of rating changes distribution."""
+    valid_df = df[df['Difference'].notna()]
+
+    if len(valid_df) == 0:
+        return None
+
+    fig = px.histogram(
+        valid_df,
+        x='Difference',
+        nbins=30,
+        title=title,
+        color_discrete_sequence=['steelblue']
+    )
+
+    fig.add_vline(x=0, line_dash="dash", line_color="red", annotation_text="No Change")
+
+    fig.update_layout(
+        xaxis_title="Rating Change",
+        yaxis_title="Number of Apartments",
+        height=400
+    )
+
+    return fig
+
+def display_alerts(df, dec_col, threshold, platform):
+    """Display alerts for critical apartments."""
+    st.subheader("⚠️ Alerts - Apartments Requiring Attention")
+
+    # Critical low ratings
+    critical = df[df[dec_col].notna() & (df[dec_col] < threshold)].copy()
+    critical = critical.sort_values(dec_col)
+
+    if len(critical) > 0:
+        st.error(f"**Critical: {len(critical)} apartments with rating below {threshold}**")
+        for _, row in critical.head(10).iterrows():
+            st.write(f"• **{row['Nom']}**: {row[dec_col]}")
+
+    # Biggest drops
+    biggest_drops = df[df['Difference'].notna()].nsmallest(5, 'Difference')
+    if len(biggest_drops) > 0 and biggest_drops.iloc[0]['Difference'] < -0.3:
+        st.warning("**Biggest Rating Drops:**")
+        for _, row in biggest_drops.iterrows():
+            if row['Difference'] < -0.3:
+                st.write(f"• **{row['Nom']}**: {row['Difference']:+.2f}")
+
+def filter_dataframe(df, search_term, show_only):
+    """Filter dataframe based on user selections."""
+    filtered = df.copy()
+
+    if search_term:
+        filtered = filtered[filtered['Nom'].str.contains(search_term, case=False, na=False)]
+
+    if show_only == "Improvements":
+        filtered = filtered[filtered['Difference'] > 0]
+    elif show_only == "Degradations":
+        filtered = filtered[filtered['Difference'] < 0]
+    elif show_only == "Stable":
+        filtered = filtered[filtered['Difference'] == 0]
+    elif show_only == "New Ratings":
+        filtered = filtered[filtered['Evolution'].str.contains('★|New', na=False, regex=True)]
+
+    return filtered
+
+# Main App
+def main():
+    st.title("🏠 Apartment Grades Dashboard")
+
+    # Sidebar
+    st.sidebar.title("Data Source")
+    data_source = st.sidebar.radio("Choose data source", ["Upload PDF Files", "Use Sample Data (Oct vs Dec 2025)"])
+
+    st.sidebar.markdown("---")
+    st.sidebar.title("Platform")
+    platform = st.sidebar.radio("Select Platform", ["Booking.com", "Airbnb"])
+
+    # Initialize variables
+    df = None
+    oct_col = None
+    dec_col = None
+    max_rating = 10 if platform == "Booking.com" else 5
+    threshold = 5.0 if platform == "Booking.com" else 3.0
+    period_label = ""
+
+    if data_source == "Upload PDF Files":
+        st.markdown("### Upload your PDF files to compare")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.subheader("📅 Period 1 (Before)")
+            before_label = st.text_input("Label for Period 1", value="Before", key="before_label")
+            before_file = st.file_uploader(
+                f"Upload {platform} PDF for Period 1",
+                type=['pdf'],
+                key="before_pdf"
+            )
+
+        with col2:
+            st.subheader("📅 Period 2 (After)")
+            after_label = st.text_input("Label for Period 2", value="After", key="after_label")
+            after_file = st.file_uploader(
+                f"Upload {platform} PDF for Period 2",
+                type=['pdf'],
+                key="after_pdf"
+            )
+
+        if before_file and after_file:
+            with st.spinner("Processing PDF files..."):
+                try:
+                    # Extract data from PDFs
+                    if platform == "Booking.com":
+                        df_before = extract_booking_data_from_pdf(before_file)
+                        df_after = extract_booking_data_from_pdf(after_file)
+                    else:
+                        df_before = extract_airbnb_data_from_pdf(before_file)
+                        df_after = extract_airbnb_data_from_pdf(after_file)
+
+                    if len(df_before) == 0 or len(df_after) == 0:
+                        st.error("Could not extract data from one or both PDFs. Please check the file format.")
+                    else:
+                        # Create comparison
+                        df, oct_col, dec_col = create_comparison_df(df_before, df_after, before_label, after_label)
+                        period_label = f"{before_label} vs {after_label}"
+                        st.success(f"Successfully loaded {len(df_before)} apartments from Period 1 and {len(df_after)} from Period 2")
+
+                except Exception as e:
+                    st.error(f"Error processing PDFs: {str(e)}")
+        else:
+            st.info("Please upload both PDF files to generate the comparison.")
+
+    else:
+        # Use sample data
+        period_label = "October 2025 vs December 2025"
+        if platform == "Booking.com":
+            try:
+                df = load_booking_data()
+                oct_col = "Note Oct 22"
+                dec_col = "Note Dec 29"
+            except:
+                st.error("Sample Booking data not found. Please upload your own files.")
+        else:
+            try:
+                df = load_airbnb_data()
+                oct_col = "Note Oct 23"
+                dec_col = "Note Dec 28"
+            except:
+                st.error("Sample Airbnb data not found. Please upload your own files.")
+
+    # Only show dashboard if we have data
+    if df is None or len(df) == 0:
+        st.markdown("---")
+        st.markdown("### 👆 Upload your PDF files or select sample data to get started")
+        return
+
+    st.markdown(f"### Comparison: {period_label}")
+    st.markdown("---")
+
+    # Filters section
+    st.sidebar.markdown("---")
+    st.sidebar.title("Filters")
+
+    search_term = st.sidebar.text_input("🔍 Search apartment name")
+    show_only = st.sidebar.selectbox(
+        "Show only",
+        ["All", "Improvements", "Degradations", "Stable", "New Ratings"]
+    )
+
+    st.sidebar.markdown("---")
+    st.sidebar.title("Chart Options")
+    show_top_n = st.sidebar.slider("Number of apartments in Top Changes", min_value=5, max_value=100, value=10, step=5)
+
+    # Apply filters
+    filtered_df = filter_dataframe(df, search_term, show_only)
+
+    # Summary metrics
+    metrics = create_summary_metrics(filtered_df, oct_col, dec_col)
+
+    st.subheader(f"📊 {platform} Summary")
+
+    col1, col2, col3, col4, col5 = st.columns(5)
+    with col1:
+        st.metric("Total Apartments", metrics['total'])
+    with col2:
+        st.metric("Improved", metrics['improved'], delta=f"+{metrics['improved']}", delta_color="normal")
+    with col3:
+        st.metric("Degraded", metrics['degraded'], delta=f"-{metrics['degraded']}", delta_color="inverse")
+    with col4:
+        st.metric("Stable", metrics['stable'])
+    with col5:
+        st.metric("New Ratings", metrics['new_ratings'])
+
+    st.markdown("---")
+
+    # Tabs for different visualizations
+    tab1, tab2, tab3, tab4 = st.tabs(["📈 Top Changes", "🎯 Scatter Plot", "📊 Distribution", "📋 Data Table"])
+
+    with tab1:
+        col1, col2 = st.columns(2)
+
+        with col1:
+            chart = create_top_changes_chart_altair(filtered_df, oct_col, dec_col, f"Top {show_top_n} Improvements (Oct → Dec)", top_n=show_top_n, improvements=True)
+            if chart:
+                st.altair_chart(chart, use_container_width=True)
+                st.caption("Gray = October rating, Green = December rating")
+            else:
+                st.info("No improvements to display")
+
+        with col2:
+            chart = create_top_changes_chart_altair(filtered_df, oct_col, dec_col, f"Top {show_top_n} Degradations (Oct → Dec)", top_n=show_top_n, improvements=False)
+            if chart:
+                st.altair_chart(chart, use_container_width=True)
+                st.caption("Gray = October rating, Red = December rating")
+            else:
+                st.info("No degradations to display")
+
+    with tab2:
+        valid_df = filtered_df[filtered_df[oct_col].notna() & filtered_df[dec_col].notna()].copy()
+
+        if len(valid_df) > 0:
+            # Prepare data for Altair
+            valid_df['Status'] = valid_df['Difference'].apply(
+                lambda x: 'Improved' if x > 0 else ('Degraded' if x < 0 else 'Stable')
+            )
+            valid_df['Oct Rating'] = valid_df[oct_col]
+            valid_df['Dec Rating'] = valid_df[dec_col]
+
+            # Create diagonal line data
+            line_df = pd.DataFrame({'x': [0, max_rating], 'y': [0, max_rating]})
+
+            # Scatter plot with hover
+            scatter = alt.Chart(valid_df).mark_circle(size=80, opacity=0.7).encode(
+                x=alt.X('Oct Rating:Q', title='October Rating', scale=alt.Scale(domain=[0, max_rating + 0.5])),
+                y=alt.Y('Dec Rating:Q', title='December Rating', scale=alt.Scale(domain=[0, max_rating + 0.5])),
+                color=alt.Color('Status:N', scale=alt.Scale(
+                    domain=['Improved', 'Degraded', 'Stable'],
+                    range=['green', 'red', 'gray']
+                )),
+                tooltip=['Nom:N', 'Oct Rating:Q', 'Dec Rating:Q', 'Difference:Q', 'Status:N']
+            ).properties(
+                title=f"{platform}: October vs December Ratings",
+                width=700,
+                height=500
+            )
+
+            # Diagonal line (no change)
+            line = alt.Chart(line_df).mark_line(strokeDash=[5, 5], color='black', opacity=0.5).encode(
+                x='x:Q',
+                y='y:Q'
+            )
+
+            chart = scatter + line
+            st.altair_chart(chart, use_container_width=True)
+            st.caption("Hover over points to see apartment details. Points above diagonal = improved.")
+        else:
+            st.info("Not enough data for scatter plot")
+
+    with tab3:
+        valid_df = filtered_df[filtered_df['Difference'].notna()].copy()
+
+        if len(valid_df) > 0:
+            # Create Altair histogram with hover
+            histogram = alt.Chart(valid_df).mark_bar(opacity=0.7).encode(
+                x=alt.X('Difference:Q', bin=alt.Bin(maxbins=30), title='Rating Change'),
+                y=alt.Y('count()', title='Number of Apartments'),
+                tooltip=[alt.Tooltip('Difference:Q', bin=alt.Bin(maxbins=30), title='Rating Change Range'),
+                         alt.Tooltip('count()', title='Count')]
+            ).properties(
+                title="Distribution of Rating Changes",
+                width=700,
+                height=400
+            )
+
+            # Vertical line at 0
+            rule = alt.Chart(pd.DataFrame({'x': [0]})).mark_rule(color='red', strokeDash=[5, 5]).encode(
+                x='x:Q'
+            )
+
+            chart = histogram + rule
+            st.altair_chart(chart, use_container_width=True)
+            st.caption("Red dashed line = no change. Bars to the right = improvements, left = degradations.")
+        else:
+            st.info("Not enough data for distribution chart")
+
+    with tab4:
+        st.subheader("Full Data Table")
+
+        # Format the dataframe for display
+        display_df = filtered_df.copy()
+
+        # Add styling
+        st.dataframe(
+            display_df,
+            use_container_width=True,
+            height=600,
+            column_config={
+                "Nom": st.column_config.TextColumn("Apartment Name", width="large"),
+                "Difference": st.column_config.NumberColumn("Change", format="%.2f"),
+                oct_col: st.column_config.NumberColumn(f"Oct Rating", format="%.1f"),
+                dec_col: st.column_config.NumberColumn(f"Dec Rating", format="%.1f"),
+            }
+        )
+
+        # Download button
+        csv = filtered_df.to_csv(index=False)
+        st.download_button(
+            label="📥 Download filtered data as CSV",
+            data=csv,
+            file_name=f"{platform.lower().replace('.', '')}_filtered_data.csv",
+            mime="text/csv"
+        )
+
+    st.markdown("---")
+
+    # Alerts section
+    display_alerts(filtered_df, dec_col, threshold, platform)
+
+    # Footer
+    st.markdown("---")
+    st.caption("Dashboard generated on December 31, 2025 | Data: October 22-23 vs December 28-29, 2025")
+
+if __name__ == "__main__":
+    main()

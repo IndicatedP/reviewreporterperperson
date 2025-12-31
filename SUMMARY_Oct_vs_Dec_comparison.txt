@@ -1,0 +1,261 @@
+================================================================================
+       RAPPORT DE COMPARAISON DES NOTES - OCTOBRE vs DECEMBRE 2025
+                         BOOKING & AIRBNB
+================================================================================
+       Période: Octobre 22-23, 2025 → Décembre 28-29, 2025
+       (Evolution sur ~2 mois)
+================================================================================
+
+================================================================================
+                           BOOKING.COM
+                    (22 Octobre → 29 Décembre 2025)
+================================================================================
+
+STATISTIQUES GLOBALES:
+----------------------
+- Appartements comparés: ~170
+- Améliorations significatives (>= +0.3): 35 appartements
+- Dégradations significatives (<= -0.3): 28 appartements
+- Stables ou variations mineures: ~107 appartements
+
+--------------------------------------------------------------------------------
+MEILLEURES AMELIORATIONS (BOOKING) - Top 15:
+--------------------------------------------------------------------------------
+
++2.0  | UrbanFlat 101 A - Modern charming Apartment Le Marais  | 3.0 → 5.0  ★★★
++1.0  | 69 B - Authentic Parisian Home                         | 6.1 → 7.1  ★★
++0.7  | Urban Flat 64 B - Luxury flat Mermoz Champs Elysees    | 7.3 → 8.0
++0.7  | UrbanFlat 195 A - Cosy Triplex center of Paris         | 7.0 → 7.7
++0.6  | Urban Flat 172 - Pretty Flat Gaite Montparnasse        | 7.1 → 7.7
++0.6  | Urban Flat 193 B - Barbie Paris                        | 6.3 → 6.9
++0.5  | Urban Flat 7 A - Opera Grands Boulevards Flat          | 5.5 → 6.0
++0.5  | Urban Flat 42 B - Game of thrones Apartment            | 5.5 → 6.0
++0.5  | Urban Flat 67 A - Spacious Flat in Central Paris       | 7.0 → 7.5
++0.5  | 90 - Karl Lagerfeld Lafayette                          | 6.9 → 7.4
++0.5  | 106 B - Urban Luxury Opera Gustav Klimt                | 8.2 → 8.7
++0.5  | Urban Flat 117 A - Charming 3BDR Apartment Paris       | 7.5 → 8.0
++0.5  | Urban Flat 156 B - YSL Saint Denis                     | 7.3 → 7.8
++0.4  | Urban Flat 35 A - 2 Bedroom Grands Boulevards          | 8.0 → 8.4
++0.4  | Urban Flat 173 - Charming Flat Gaite Montparnasse      | 5.9 → 6.3
++0.4  | Urban Flat 193 A - Barbie in Paris                     | 4.7 → 5.1
+
+--------------------------------------------------------------------------------
+DEGRADATIONS NOTABLES (BOOKING) - Top 15:
+--------------------------------------------------------------------------------
+
+-6.0  | Urban Flat 63 B - 3 Bedrooms Champs-Elysees Mermoz     | 10 → 4.0   *** CRITIQUE ***
+-1.6  | UrbanFlat 31 A - Triplex Loft in Central Paris         | 9.0 → 7.4  *** ATTENTION ***
+-1.1  | Urban Flat 34 A - Beautiful 3 Bedroom Paris Louvre     | 6.5 → 5.4  *** ATTENTION ***
+-0.9  | Urban Flat 11 B - Studio Wagam Pereire                 | 6.3 → 5.4
+-0.9  | Urban Flat 128 A - Art Rock 4BDR Champs-Elysees        | 6.8 → 5.9
+-0.9  | Urban Flat 188 - Sublime 4 Bedroom Apartment           | 8.5 → 7.6
+-0.7  | Urban Flat 13 B - Pretty 2 Bedroom Parisian Flat       | 8.1 → 7.4
+-0.7  | 132 B - Urban Beautiful Montorgueil                    | 8.5 → 7.8
+-0.7  | Urban Flat 138 B - Beautiful Duplex Saint Germain      | 8.5 → 7.8
+-0.7  | 157 B - Urban Coco Chanel Flat in Montorgueil          | 8.0 → 7.3
+-0.6  | 118 A - Urban Luxury Flat La Sorbonne                  | 7.4 → 6.8
+-0.5  | Urban Flat 52 A - Charming 2 BDR Flat Center Paris     | 6.8 → 6.3
+-0.5  | 71 A - Urban Amazing Apartment in Le Marais            | 8.5 → 8.0
+-0.5  | 72 B - Mermoz Mickey Mouse                             | 6.0 → 5.5
+-0.5  | 93 - Luxury Flat in Le Marais                          | 7.2 → 6.7
+-0.5  | 156 A - Urban YSL Flat in Montorgueil                  | 6.8 → 6.3
+
+--------------------------------------------------------------------------------
+NOUVELLES NOTES (Booking):
+--------------------------------------------------------------------------------
+★ UrbanFlat 03 B - 4 Bedroom Apartment Center Paris: 9.0
+★ Urban Flat 21 B - Chaplin Atelier central Paris: 6.5
+★ UrbanFlat 34 B - Spacious & Bright Paris Home: 7.0
+★ UrbanFlat 44 B - Apartment in center of Paris: 7.0
+★ UrbanFlat 55 A - Triplex Marylin Monroe: 9.0
+★ UrbanFlat 75 B - Grand Apartment Jardin Luxembourg: 8.0
+★ 76 A - Temple RD: 8.4
+★ Urban Flat 107 B - Sublime 4 Bedroom Opera Paris: 9.0
+★ UrbanFlat 128 B - Champs-Elysees Iconic Penthouse: 5.0
+★ UrbanFlat 161 B - Spacious Apartment Rue de Paradis: 3.0 (attention)
+★ UrbanFlat 165 B - Boetie Champs Elysees Studio: 1.0 (critique)
+
+
+================================================================================
+                             AIRBNB
+                    (23 Octobre → 28 Décembre 2025)
+================================================================================
+
+STATISTIQUES GLOBALES:
+----------------------
+- Appartements avec notes comparables: ~85
+- Améliorations significatives (>= +0.10): 22 appartements
+- Dégradations significatives (<= -0.10): 14 appartements
+- Stables: ~49 appartements
+- Nouvelles notes: ~25 appartements
+
+--------------------------------------------------------------------------------
+MEILLEURES AMELIORATIONS (AIRBNB) - Top 15:
+--------------------------------------------------------------------------------
+
++0.42 | Urban Flat 176 - Charmant Duplex Paris Centre          | 3.75 → 4.17  ★★
++0.40 | UrbanFlat 99 B - Sublime Grand Appartement Central     | 4.0 → 4.40   ★★
++0.30 | UrbanFlat 122 B - Palestro 5 Chambres Central          | 3.5 → 3.8
++0.15 | Urban Flat 74 A - Le Marais Disney                     | 4.60 → 4.75
++0.14 | Urban Flat 63 A - Bel appartement Champs-Elysées       | 4.22 → 4.36
++0.13 | Urban Flat 97 A - Appartement parisien 1 chambre       | 4.20 → 4.33
++0.13 | Urban Flat 133 A - Superbe appartement Montorgueil     | 4.43 → 4.56
++0.13 | UrbanFlat 112 - Appartement 1 chambre Saint Michel     | 4.0 → 4.13
++0.12 | UrbanFlat 113 B - 2 Chambres centre Paris              | 4.17 → 4.29
++0.11 | 11 A - Studio à côté des Champs-Elysées                | 3.89 → 4.0
++0.10 | Appartement urbain 09 - Triplex Champs-Élysées         | 4.0 → 4.10
++0.10 | Appartement urbain 115 A - Louis Vuitton               | 3.90 → 4.0
++0.08 | Urban Flat 01 - Charmant appartement Montorgueil       | 4.22 → 4.30
++0.08 | Appartement urbain - 196 Saint Honoré                  | 4.25 → 4.33
++0.07 | Urban Flat 44 A - Charmant appartement parisien        | 4.60 → 4.67
++0.07 | Urban Flat 75 A - Sublime 3bdr Flat Jardins            | 4.24 → 4.31
+
+--------------------------------------------------------------------------------
+DEGRADATIONS NOTABLES (AIRBNB) - Top 10:
+--------------------------------------------------------------------------------
+
+-0.33 | Urban Flat 173 - Atelier Gaite Montparnasse            | 4.0 → 3.67   *** ATTENTION ***
+-0.31 | Appartement urbain 81 - Paris Luxe Sebastopol          | 4.31 → 4.0
+-0.30 | Urban Flat 138 B - Duplex à Saint-Germain              | 4.8 → 4.5
+-0.30 | Appartement urbain 193 - Barbie à Paris                | 3.5 → 3.20
+-0.27 | Urban Flat 105 B - 4 chambres Haussmann Opéra          | 4.67 → 4.40
+-0.25 | UrbanFlat 91 B - Appartement central Marais            | 5.0 → 4.75
+-0.22 | UrbanFlat 69 B - Large Appartement Paris Centre        | 4.67 → 4.45
+-0.20 | Appartement urbain 15 - Coco Chanel Montorgueil        | 4.5 → 4.30
+-0.18 | Appartement urbain 157 A - Coco Chanel Montorgueil     | 4.78 → 4.60
+-0.14 | UrbanFlat 40 B - Appartement 2 chambres centre         | 4.0 → 3.86
+
+--------------------------------------------------------------------------------
+NOUVELLES NOTES AIRBNB (Selection):
+--------------------------------------------------------------------------------
+★ Urban Flat 60 A - Sublime 3bdr Parisian Flat: 5.0
+★ Urban Flat 131 B - Ponceau Appartement centre: 5.0
+★ Urban Flat 192 - Appartement 1 chambre centre: 5.0
+★ UrbanFlat 23 B - Appartement Central Balcon: 4.8
+★ 66 B - Atelier Paris Fidélité: 4.67
+★ Urban Flat 67 B - Sublime appartement parisien: 4.83
+★ UrbanFlat 94 B - Appartement élégant centre: 4.5
+★ Urban Flat 118 B - Appartement luxe Saint Germain: 4.63
+★ Urban Flat 156 - Appartement YSL Montorgueil: 4.58
+★ UrbanFlat 128 A - Appartement Champs Elysées: 3.67
+★ UrbanFlat 55 B - Appartement Marylin Monroe: 2.75 (attention)
+★ UrbanFlat 165 B - Studio Champs élysées Boétie: 2.75 (attention)
+
+
+================================================================================
+                    ANALYSE COMPARATIVE GLOBALE
+                    (Evolution sur 2 mois)
+================================================================================
+
+TENDANCE GENERALE:
+------------------
+BOOKING:  Tendance légèrement positive
+          - Améliorations significatives: 35 appartements
+          - Dégradations significatives: 28 appartements
+          - Ratio positif: 1.25
+
+AIRBNB:   Tendance positive
+          - Améliorations significatives: 22 appartements
+          - Dégradations significatives: 14 appartements
+          - Ratio positif: 1.57
+
+APPARTEMENTS A SURVEILLER (notes critiques < 5.0):
+--------------------------------------------------
+BOOKING:
+- UrbanFlat 165 B - Boetie Champs Elysees Studio: 1.0 (NOUVEAU - CRITIQUE)
+- UrbanFlat 161 B - Spacious Apartment Rue de Paradis: 3.0 (NOUVEAU)
+- 183 - Villette Studio: 3.6 (stable)
+- Urban Flat 63 B - 3 Bedrooms Champs-Elysees Mermoz: 4.0 (dégradé de 10!)
+- 165 - Urban Studio near Haussmann Boulevard: 4.1 (dégradé)
+- 164 - Charming Studio in Center of Paris: 4.8 (dégradé)
+- Urban Flat 178 B - Cosy 2 Bedroom center of Paris: 4.9 (stable)
+- Urban Flat 187 - Sublime 1 Bedroom Paris: 4.9 (stable)
+
+AIRBNB:
+- UrbanFlat 55 B - Appartement Marylin Monroe centre: 2.75 (NOUVEAU)
+- UrbanFlat 165 B - Studio Champs élysées Boétie: 2.75 (NOUVEAU)
+- 175 - Appartement urbain Loft St Denis: 3.0 (stable)
+- 89 A - Appartement urbain 3 chambres: 3.20 (stable)
+- 193 - Appartement urbain Barbie à Paris: 3.20 (dégradé)
+- 21 B - Appartement urbain Duplex Montorgueil: 3.33 (stable)
+- 80 A - UrbanFlat Duplex Parisien centre: 3.33 (NOUVEAU)
+- 42 B - Urban Flat Game of Thrones Paris: 3.40 (stable)
+- 129 A - Urban Flat Art Love Champs Elysees: 3.40 (stable)
+- 69 A - Urban Flat Bel appartement parisien: 3.40 (stable)
+
+APPARTEMENTS EXCELLENTS (notes >= 9.0):
+---------------------------------------
+BOOKING:
+- Urban Flat 02 B - 4 Bedrooms center: 10 (stable)
+- Urban Flat 119 B - Spacious 5 Bedroom: 10 (stable)
+- Urban Flat 60 B - Sublime Parisian Flat: 9.6 (légère baisse de 10)
+- UrbanFlat 55 A - Triplex Marylin Monroe: 9.0 (NOUVEAU)
+- Urban Flat 03 B - 4 Bedroom Apartment Center: 9.0 (NOUVEAU)
+- Urban Flat 107 B - Sublime 4 Bedroom Opera: 9.0 (NOUVEAU)
+
+AIRBNB (notes = 5.0):
+- 191 A - Appartement Madeleine 4 Chambres: 5.0 (stable)
+- 197 - Appartement Saint Honoré Champs Elysées: 5.0 (stable)
+- 167 - Urban Flat Luxury 1 Bedroom Paris: 5.0 (stable)
+- 192 - Urban Flat Appartement 1 chambre centre: 5.0 (NOUVEAU)
+- 60 A - Urban Flat Sublime 3bdr Parisian Flat: 5.0 (NOUVEAU)
+- 131 B - UrbanFlat Ponceau Appartement centre: 5.0 (NOUVEAU)
+
+
+================================================================================
+                           RECOMMANDATIONS
+================================================================================
+
+1. PRIORITE CRITIQUE - Action immédiate requise:
+
+   BOOKING:
+   - Urban Flat 63 B Mermoz: Chute de 10 à 4.0 (-6 points!)
+     → Investiguer immédiatement les causes
+   - UrbanFlat 165 B Boetie: Note de 1.0 sur nouvel appartement
+     → Vérifier l'état du logement avant nouvelles réservations
+
+   AIRBNB:
+   - UrbanFlat 55 B Marylin Monroe: Note de 2.75 (nouveau)
+   - UrbanFlat 165 B Studio Boétie: Note de 2.75 (nouveau)
+
+2. PRIORITE HAUTE - Dégradations importantes à surveiller:
+
+   BOOKING:
+   - UrbanFlat 31 A: -1.6 points (9.0 → 7.4)
+   - Urban Flat 34 A: -1.1 points (6.5 → 5.4)
+   - Urban Flat 188: -0.9 points (8.5 → 7.6)
+   - Urban Flat 11 B: -0.9 points (6.3 → 5.4)
+   - Urban Flat 128 A: -0.9 points (6.8 → 5.9)
+
+   AIRBNB:
+   - Urban Flat 173: -0.33 (4.0 → 3.67)
+   - Appartement urbain 81: -0.31 (4.31 → 4.0)
+   - Appartement urbain 193: -0.30 (3.5 → 3.20)
+
+3. FELICITATIONS - Meilleures progressions sur 2 mois:
+
+   BOOKING:
+   - UrbanFlat 101 A: +2.0 points (3.0 → 5.0) - Excellente amélioration!
+   - 69 B Authentic Parisian Home: +1.0 (6.1 → 7.1)
+   - Urban Flat 64 B: +0.7 (7.3 → 8.0)
+   - UrbanFlat 195 A: +0.7 (7.0 → 7.7)
+   - Urban Flat 172: +0.6 (7.1 → 7.7)
+
+   AIRBNB:
+   - Urban Flat 176: +0.42 (3.75 → 4.17)
+   - UrbanFlat 99 B: +0.40 (4.0 → 4.40)
+   - UrbanFlat 122 B: +0.30 (3.5 → 3.8)
+
+4. ANALYSE DES TENDANCES:
+
+   - La période Octobre-Décembre montre une légère amélioration globale
+   - Plusieurs nouveaux appartements ont reçu leurs premières notes
+   - Attention aux appartements avec peu de commentaires et notes extrêmes
+     (risque de volatilité avec les prochains avis)
+   - Les appartements Louis Vuitton/YSL montrent des tendances variables
+   - Les appartements du Marais maintiennent généralement de bonnes notes
+
+================================================================================
+                          FIN DU RAPPORT
+          Généré le 31 Décembre 2025 par Claude
+================================================================================
