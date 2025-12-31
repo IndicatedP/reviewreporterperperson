@@ -363,6 +363,60 @@ def display_alerts(df, dec_col, threshold, platform):
             if row['Difference'] < -0.3:
                 st.write(f"• **{row['Nom']}**: {row['Difference']:+.2f}")
 
+def load_account_manager_mapping(file_path=None, uploaded_file=None):
+    """Load account manager to apartment mapping from Excel file."""
+    try:
+        if uploaded_file is not None:
+            df = pd.read_excel(uploaded_file, header=None)
+        elif file_path and Path(file_path).exists():
+            df = pd.read_excel(file_path, header=None)
+        else:
+            return None
+
+        # Row 1 has manager names, Row 2+ has apartments
+        managers = df.iloc[1].tolist()
+        mapping = {}
+
+        for i, manager in enumerate(managers):
+            if pd.notna(manager):
+                # Get apartment codes for this manager
+                apts = df.iloc[2:, i].dropna().tolist()
+                # Extract just the number prefix from each apartment code
+                apt_numbers = []
+                for apt in apts:
+                    apt_str = str(apt).strip()
+                    match = re.match(r'^(\d+)', apt_str)
+                    if match:
+                        apt_numbers.append(match.group(1))
+                    else:
+                        apt_numbers.append(apt_str)
+                mapping[str(manager).strip()] = apt_numbers
+
+        return mapping
+    except Exception as e:
+        return None
+
+def filter_by_manager(df, manager_mapping, selected_manager):
+    """Filter dataframe to show only apartments managed by selected manager."""
+    if selected_manager == "All Managers" or not manager_mapping:
+        return df
+
+    apt_numbers = manager_mapping.get(selected_manager, [])
+    if not apt_numbers:
+        return df
+
+    # Filter by Ligne column (extract number prefix and match)
+    def matches_manager(ligne):
+        if pd.isna(ligne):
+            return False
+        ligne_str = str(ligne).strip()
+        match = re.match(r'^(\d+)', ligne_str)
+        if match:
+            return match.group(1) in apt_numbers
+        return ligne_str in apt_numbers
+
+    return df[df['Ligne'].apply(matches_manager)]
+
 def extract_base_apartment_number(ligne):
     """Extract base apartment number from Ligne (e.g., '07 A' -> '07', '157 B' -> '157')."""
     if pd.isna(ligne):
@@ -529,6 +583,30 @@ def main():
     st.markdown(f"### Comparison: {period_label}")
     st.markdown("---")
 
+    # Account Manager section
+    st.sidebar.markdown("---")
+    st.sidebar.title("Account Manager")
+
+    # Try to load default mapping file
+    default_mapping_path = SCRIPT_DIR / "acctmanager.xlsx"
+    manager_mapping = load_account_manager_mapping(file_path=default_mapping_path)
+
+    # Option to upload custom mapping
+    upload_mapping = st.sidebar.checkbox("Upload custom manager file", value=False)
+    if upload_mapping:
+        mapping_file = st.sidebar.file_uploader("Upload manager mapping (xlsx)", type=['xlsx'])
+        if mapping_file:
+            manager_mapping = load_account_manager_mapping(uploaded_file=mapping_file)
+
+    # Manager selector
+    if manager_mapping:
+        manager_options = ["All Managers"] + sorted(manager_mapping.keys())
+        selected_manager = st.sidebar.selectbox("Select Account Manager", manager_options)
+        st.sidebar.caption(f"{len(manager_mapping.get(selected_manager, []))} apartments" if selected_manager != "All Managers" else "")
+    else:
+        selected_manager = "All Managers"
+        st.sidebar.info("No manager mapping file found. Add 'acctmanager.xlsx' or upload one.")
+
     # Filters section
     st.sidebar.markdown("---")
     st.sidebar.title("Filters")
@@ -568,8 +646,12 @@ def main():
         help="Combines apartments like 07 A and 07 B into a single averaged entry"
     )
 
-    # Apply averaging if enabled
+    # Apply manager filter first
     working_df = df.copy()
+    if selected_manager != "All Managers" and manager_mapping:
+        working_df = filter_by_manager(working_df, manager_mapping, selected_manager)
+
+    # Apply averaging if enabled
     if average_duplicates:
         working_df = aggregate_by_apartment(working_df, oct_col, dec_col)
         # Update apartment list after aggregation
