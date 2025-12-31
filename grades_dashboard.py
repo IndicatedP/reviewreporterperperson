@@ -418,6 +418,9 @@ def filter_by_manager(df, manager_mapping, selected_manager):
     if not apt_numbers:
         return df
 
+    # Normalize apartment numbers (remove leading zeros for comparison)
+    normalized_apt_numbers = [str(int(n)) if n.isdigit() else n for n in apt_numbers]
+
     # Filter by Ligne column (extract number prefix and match)
     def matches_manager(ligne):
         if pd.isna(ligne):
@@ -425,7 +428,9 @@ def filter_by_manager(df, manager_mapping, selected_manager):
         ligne_str = str(ligne).strip()
         match = re.match(r'^(\d+)', ligne_str)
         if match:
-            return match.group(1) in apt_numbers
+            # Normalize the ligne number too (remove leading zeros)
+            ligne_num = str(int(match.group(1)))
+            return ligne_num in normalized_apt_numbers
         return ligne_str in apt_numbers
 
     return df[df['Ligne'].apply(matches_manager)]
