@@ -363,6 +363,60 @@ def display_alerts(df, dec_col, threshold, platform):
             if row['Difference'] < -0.3:
                 st.write(f"• **{row['Nom']}**: {row['Difference']:+.2f}")
 
+def extract_base_apartment_number(ligne):
+    """Extract base apartment number from Ligne (e.g., '07 A' -> '07', '157 B' -> '157')."""
+    if pd.isna(ligne):
+        return None
+    ligne_str = str(ligne).strip()
+    # Extract just the numeric part (remove A, B, C suffixes)
+    match = re.match(r'^(\d+)', ligne_str)
+    if match:
+        return match.group(1)
+    return ligne_str
+
+def aggregate_by_apartment(df, oct_col, dec_col):
+    """Aggregate multiple ads per apartment by averaging their ratings."""
+    df = df.copy()
+
+    # Extract base apartment number
+    df['BaseApt'] = df['Ligne'].apply(extract_base_apartment_number)
+
+    # Group by base apartment number and aggregate
+    aggregated = df.groupby('BaseApt').agg({
+        'Nom': 'first',  # Take first name as representative
+        oct_col: 'mean',
+        dec_col: 'mean',
+        'Ligne': lambda x: ', '.join(x.dropna().astype(str).unique())  # Combine all ligne values
+    }).reset_index()
+
+    # Recalculate difference and evolution
+    aggregated['Difference'] = aggregated.apply(
+        lambda row: round(row[dec_col] - row[oct_col], 2) if pd.notna(row[oct_col]) and pd.notna(row[dec_col]) else None,
+        axis=1
+    )
+
+    def get_evolution(row):
+        if pd.isna(row[oct_col]) and pd.notna(row[dec_col]):
+            return '★ New Rating'
+        elif pd.isna(row['Difference']):
+            return 'N/A'
+        elif row['Difference'] > 0:
+            return '↑ Improved'
+        elif row['Difference'] < 0:
+            return '↓ Degraded'
+        else:
+            return '→ Stable'
+
+    aggregated['Evolution'] = aggregated.apply(get_evolution, axis=1)
+
+    # Update Nom to show it's averaged
+    aggregated['Nom'] = aggregated.apply(
+        lambda row: f"[Avg] Apt {row['BaseApt']} ({row['Ligne']})" if ',' in str(row['Ligne']) else row['Nom'],
+        axis=1
+    )
+
+    return aggregated
+
 def filter_dataframe(df, search_term, show_only):
     """Filter dataframe based on user selections."""
     filtered = df.copy()
@@ -506,8 +560,23 @@ def main():
     st.sidebar.title("Chart Options")
     show_top_n = st.sidebar.slider("Number of apartments in Top Changes", min_value=5, max_value=100, value=10, step=5)
 
+    st.sidebar.markdown("---")
+    st.sidebar.title("Data Options")
+    average_duplicates = st.sidebar.checkbox(
+        "Average multiple ads per apartment",
+        value=False,
+        help="Combines apartments like 07 A and 07 B into a single averaged entry"
+    )
+
+    # Apply averaging if enabled
+    working_df = df.copy()
+    if average_duplicates:
+        working_df = aggregate_by_apartment(working_df, oct_col, dec_col)
+        # Update apartment list after aggregation
+        all_apartments = sorted(working_df['Nom'].dropna().unique().tolist())
+
     # Apply filters
-    filtered_df = df.copy()
+    filtered_df = working_df.copy()
 
     # Filter by selected apartments
     if not select_all and len(selected_apartments) > 0:
