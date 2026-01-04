@@ -668,10 +668,14 @@ def main():
                 df_booking['Platform'] = 'Booking.com'
 
                 # Airbnb: Note Oct 23, Note Dec 28 -> Note Oct, Note Dec
+                # Normalize Airbnb from 0-5 scale to 0-10 scale (multiply by 2)
                 df_airbnb = df_airbnb.rename(columns={
                     'Note Oct 23': 'Note Oct',
                     'Note Dec 28': 'Note Dec'
                 })
+                df_airbnb['Note Oct'] = df_airbnb['Note Oct'] * 2
+                df_airbnb['Note Dec'] = df_airbnb['Note Dec'] * 2
+                df_airbnb['Difference'] = df_airbnb['Difference'] * 2  # Scale difference too
                 df_airbnb['Platform'] = 'Airbnb'
 
                 # Combine both dataframes
@@ -787,7 +791,7 @@ def main():
 
     # Note about different scales for combined view
     if platform == "Both Platforms":
-        st.caption("⚠️ Note: Booking.com uses 0-10 scale, Airbnb uses 0-5 scale. Points/ratings are not directly comparable across platforms.")
+        st.caption("ℹ️ Airbnb ratings normalized to 0-10 scale (×2) for comparison with Booking.com")
 
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
