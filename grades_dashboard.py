@@ -572,14 +572,21 @@ def main():
 
     st.sidebar.markdown("---")
     st.sidebar.title("Platform")
-    platform = st.sidebar.radio("Select Platform", ["Booking.com", "Airbnb"])
+    platform = st.sidebar.radio("Select Platform", ["Booking.com", "Airbnb", "Both Platforms"])
 
     # Initialize variables
     df = None
     oct_col = None
     dec_col = None
-    max_rating = 10 if platform == "Booking.com" else 5
-    threshold = 5.0 if platform == "Booking.com" else 3.0
+    if platform == "Booking.com":
+        max_rating = 10
+        threshold = 5.0
+    elif platform == "Airbnb":
+        max_rating = 5
+        threshold = 3.0
+    else:  # Both Platforms
+        max_rating = 10  # Use larger scale for combined view
+        threshold = 5.0
     period_label = ""
 
     if data_source == "Upload PDF Files":
@@ -639,13 +646,40 @@ def main():
                 dec_col = "Note Dec 29"
             except:
                 st.error("Sample Booking data not found. Please upload your own files.")
-        else:
+        elif platform == "Airbnb":
             try:
                 df = load_airbnb_data()
                 oct_col = "Note Oct 23"
                 dec_col = "Note Dec 28"
             except:
                 st.error("Sample Airbnb data not found. Please upload your own files.")
+        else:
+            # Both Platforms - combine data
+            try:
+                df_booking = load_booking_data()
+                df_airbnb = load_airbnb_data()
+
+                # Normalize column names for combining
+                # Booking: Note Oct 22, Note Dec 29 -> Note Oct, Note Dec
+                df_booking = df_booking.rename(columns={
+                    'Note Oct 22': 'Note Oct',
+                    'Note Dec 29': 'Note Dec'
+                })
+                df_booking['Platform'] = 'Booking.com'
+
+                # Airbnb: Note Oct 23, Note Dec 28 -> Note Oct, Note Dec
+                df_airbnb = df_airbnb.rename(columns={
+                    'Note Oct 23': 'Note Oct',
+                    'Note Dec 28': 'Note Dec'
+                })
+                df_airbnb['Platform'] = 'Airbnb'
+
+                # Combine both dataframes
+                df = pd.concat([df_booking, df_airbnb], ignore_index=True)
+                oct_col = "Note Oct"
+                dec_col = "Note Dec"
+            except Exception as e:
+                st.error(f"Error loading combined data: {str(e)}")
 
     # Only show dashboard if we have data
     if df is None or len(df) == 0:
@@ -750,6 +784,10 @@ def main():
         st.subheader(f"📊 {platform} Summary - {selected_manager}")
     else:
         st.subheader(f"📊 {platform} Summary")
+
+    # Note about different scales for combined view
+    if platform == "Both Platforms":
+        st.caption("⚠️ Note: Booking.com uses 0-10 scale, Airbnb uses 0-5 scale. Points/ratings are not directly comparable across platforms.")
 
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
