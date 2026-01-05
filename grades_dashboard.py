@@ -649,6 +649,11 @@ def main():
     # Cache clear button
     if st.sidebar.button("🔄 Clear Cache & Reload"):
         st.cache_data.clear()
+        # Clear session state (PDF cache)
+        for key in ['pdf_cache_key', 'cached_df', 'cached_oct_col', 'cached_dec_col',
+                    'cached_period_label', 'cached_before_count', 'cached_after_count']:
+            if key in st.session_state:
+                del st.session_state[key]
         st.rerun()
 
     data_source = st.sidebar.radio("Choose data source", ["Upload PDF Files", "Use Sample Data (Oct vs Dec 2025)"])
@@ -696,26 +701,44 @@ def main():
             )
 
         if before_file and after_file:
-            with st.spinner("Processing PDF files..."):
-                try:
-                    # Extract data from PDFs
-                    if platform == "Booking.com":
-                        df_before = extract_booking_data_from_pdf(before_file)
-                        df_after = extract_booking_data_from_pdf(after_file)
-                    else:
-                        df_before = extract_airbnb_data_from_pdf(before_file)
-                        df_after = extract_airbnb_data_from_pdf(after_file)
+            # Create a cache key based on file names and platform
+            cache_key = f"{before_file.name}_{after_file.name}_{platform}_{before_label}_{after_label}"
 
-                    if len(df_before) == 0 or len(df_after) == 0:
-                        st.error("Could not extract data from one or both PDFs. Please check the file format.")
-                    else:
-                        # Create comparison
-                        df, oct_col, dec_col = create_comparison_df(df_before, df_after, before_label, after_label)
-                        period_label = f"{before_label} vs {after_label}"
-                        st.success(f"Successfully loaded {len(df_before)} apartments from Period 1 and {len(df_after)} from Period 2")
+            # Check if we already processed these files
+            if 'pdf_cache_key' not in st.session_state or st.session_state.pdf_cache_key != cache_key:
+                with st.spinner("Processing PDF files... (this only happens once)"):
+                    try:
+                        # Extract data from PDFs
+                        if platform == "Booking.com":
+                            df_before = extract_booking_data_from_pdf(before_file)
+                            df_after = extract_booking_data_from_pdf(after_file)
+                        else:
+                            df_before = extract_airbnb_data_from_pdf(before_file)
+                            df_after = extract_airbnb_data_from_pdf(after_file)
 
-                except Exception as e:
-                    st.error(f"Error processing PDFs: {str(e)}")
+                        if len(df_before) == 0 or len(df_after) == 0:
+                            st.error("Could not extract data from one or both PDFs. Please check the file format.")
+                        else:
+                            # Create comparison and cache it
+                            df, oct_col, dec_col = create_comparison_df(df_before, df_after, before_label, after_label)
+                            st.session_state.pdf_cache_key = cache_key
+                            st.session_state.cached_df = df
+                            st.session_state.cached_oct_col = oct_col
+                            st.session_state.cached_dec_col = dec_col
+                            st.session_state.cached_period_label = f"{before_label} vs {after_label}"
+                            st.session_state.cached_before_count = len(df_before)
+                            st.session_state.cached_after_count = len(df_after)
+
+                    except Exception as e:
+                        st.error(f"Error processing PDFs: {str(e)}")
+
+            # Use cached data
+            if 'cached_df' in st.session_state:
+                df = st.session_state.cached_df
+                oct_col = st.session_state.cached_oct_col
+                dec_col = st.session_state.cached_dec_col
+                period_label = st.session_state.cached_period_label
+                st.success(f"✓ Loaded {st.session_state.cached_before_count} + {st.session_state.cached_after_count} apartments (cached)")
         else:
             st.info("Please upload both PDF files to generate the comparison.")
 
