@@ -393,6 +393,11 @@ def display_alerts(df, dec_col, threshold, platform):
     """Display alerts for critical apartments."""
     st.subheader("⚠️ Alerts - Apartments Requiring Attention")
 
+    # Ensure numeric columns
+    df = df.copy()
+    df[dec_col] = pd.to_numeric(df[dec_col], errors='coerce')
+    df['Difference'] = pd.to_numeric(df['Difference'], errors='coerce')
+
     # Critical low ratings
     critical = df[df[dec_col].notna() & (df[dec_col] < threshold)].copy()
     critical = critical.sort_values(dec_col)
@@ -403,12 +408,14 @@ def display_alerts(df, dec_col, threshold, platform):
             st.write(f"• **{row['Nom']}**: {row[dec_col]}")
 
     # Biggest drops
-    biggest_drops = df[df['Difference'].notna()].nsmallest(5, 'Difference')
-    if len(biggest_drops) > 0 and biggest_drops.iloc[0]['Difference'] < -0.3:
-        st.warning("**Biggest Rating Drops:**")
-        for _, row in biggest_drops.iterrows():
-            if row['Difference'] < -0.3:
-                st.write(f"• **{row['Nom']}**: {row['Difference']:+.2f}")
+    valid_diffs = df[df['Difference'].notna()]
+    if len(valid_diffs) > 0:
+        biggest_drops = valid_diffs.nsmallest(5, 'Difference')
+        if len(biggest_drops) > 0 and biggest_drops.iloc[0]['Difference'] < -0.3:
+            st.warning("**Biggest Rating Drops:**")
+            for _, row in biggest_drops.iterrows():
+                if row['Difference'] < -0.3:
+                    st.write(f"• **{row['Nom']}**: {row['Difference']:+.2f}")
 
 def load_account_manager_mapping(file_path=None, uploaded_file=None):
     """Load account manager to apartment mapping from Excel file."""
