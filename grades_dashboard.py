@@ -650,100 +650,187 @@ def main():
     if st.sidebar.button("🔄 Clear Cache & Reload"):
         st.cache_data.clear()
         # Clear session state (PDF cache)
-        for key in ['pdf_cache_key', 'cached_df', 'cached_oct_col', 'cached_dec_col',
-                    'cached_period_label', 'cached_before_count', 'cached_after_count']:
-            if key in st.session_state:
+        for key in list(st.session_state.keys()):
+            if key.startswith('cached_') or key == 'pdf_processed':
                 del st.session_state[key]
         st.rerun()
 
     data_source = st.sidebar.radio("Choose data source", ["Upload PDF Files", "Use Sample Data (Oct vs Dec 2025)"])
 
-    st.sidebar.markdown("---")
-    st.sidebar.title("Platform")
-    platform = st.sidebar.radio("Select Platform", ["Booking.com", "Airbnb", "Both Platforms"])
-
     # Initialize variables
     df = None
     oct_col = None
     dec_col = None
-    if platform == "Booking.com":
-        max_rating = 10
-        threshold = 5.0
-    elif platform == "Airbnb":
-        max_rating = 5
-        threshold = 3.0
-    else:  # Both Platforms
-        max_rating = 10  # Use larger scale for combined view
-        threshold = 5.0
     period_label = ""
 
     if data_source == "Upload PDF Files":
-        st.markdown("### Upload your PDF files to compare")
+        # Check if data is already processed
+        data_ready = st.session_state.get('pdf_processed', False)
 
-        col1, col2 = st.columns(2)
+        if not data_ready:
+            st.markdown("### Upload all PDF files at once")
+            st.markdown("Upload your Booking and Airbnb PDFs for both periods. All files will be processed together.")
 
-        with col1:
-            st.subheader("📅 Period 1 (Before)")
-            before_label = st.text_input("Label for Period 1", value="Before", key="before_label")
-            before_file = st.file_uploader(
-                f"Upload {platform} PDF for Period 1",
-                type=['pdf'],
-                key="before_pdf"
-            )
+            # Period labels
+            col_labels = st.columns(2)
+            with col_labels[0]:
+                before_label = st.text_input("Label for Period 1", value="Oct", key="before_label")
+            with col_labels[1]:
+                after_label = st.text_input("Label for Period 2", value="Jan", key="after_label")
 
-        with col2:
-            st.subheader("📅 Period 2 (After)")
-            after_label = st.text_input("Label for Period 2", value="After", key="after_label")
-            after_file = st.file_uploader(
-                f"Upload {platform} PDF for Period 2",
-                type=['pdf'],
-                key="after_pdf"
-            )
+            st.markdown("---")
 
-        if before_file and after_file:
-            # Create a cache key based on file names and platform
-            cache_key = f"{before_file.name}_{after_file.name}_{platform}_{before_label}_{after_label}"
+            # Booking uploads
+            st.subheader("🏨 Booking.com PDFs")
+            col1, col2 = st.columns(2)
+            with col1:
+                booking_before = st.file_uploader(f"Booking - {before_label}", type=['pdf'], key="booking_before")
+            with col2:
+                booking_after = st.file_uploader(f"Booking - {after_label}", type=['pdf'], key="booking_after")
 
-            # Check if we already processed these files
-            if 'pdf_cache_key' not in st.session_state or st.session_state.pdf_cache_key != cache_key:
-                with st.spinner("Processing PDF files... (this only happens once)"):
-                    try:
-                        # Extract data from PDFs
-                        if platform == "Booking.com":
-                            df_before = extract_booking_data_from_pdf(before_file)
-                            df_after = extract_booking_data_from_pdf(after_file)
-                        else:
-                            df_before = extract_airbnb_data_from_pdf(before_file)
-                            df_after = extract_airbnb_data_from_pdf(after_file)
+            # Airbnb uploads
+            st.subheader("🏠 Airbnb PDFs")
+            col3, col4 = st.columns(2)
+            with col3:
+                airbnb_before = st.file_uploader(f"Airbnb - {before_label}", type=['pdf'], key="airbnb_before")
+            with col4:
+                airbnb_after = st.file_uploader(f"Airbnb - {after_label}", type=['pdf'], key="airbnb_after")
 
-                        if len(df_before) == 0 or len(df_after) == 0:
-                            st.error("Could not extract data from one or both PDFs. Please check the file format.")
-                        else:
-                            # Create comparison and cache it
-                            df, oct_col, dec_col = create_comparison_df(df_before, df_after, before_label, after_label)
-                            st.session_state.pdf_cache_key = cache_key
-                            st.session_state.cached_df = df
-                            st.session_state.cached_oct_col = oct_col
-                            st.session_state.cached_dec_col = dec_col
+            # Process button
+            st.markdown("---")
+            has_booking = booking_before and booking_after
+            has_airbnb = airbnb_before and airbnb_after
+
+            if has_booking or has_airbnb:
+                if st.button("🚀 Process All Files", type="primary", use_container_width=True):
+                    with st.spinner("Processing all PDF files..."):
+                        try:
+                            # Process Booking if both files provided
+                            if has_booking:
+                                df_booking_before = extract_booking_data_from_pdf(booking_before)
+                                df_booking_after = extract_booking_data_from_pdf(booking_after)
+                                if len(df_booking_before) > 0 and len(df_booking_after) > 0:
+                                    df_booking, booking_oct_col, booking_dec_col = create_comparison_df(
+                                        df_booking_before, df_booking_after, before_label, after_label
+                                    )
+                                    st.session_state.cached_booking_df = df_booking
+                                    st.session_state.cached_booking_oct_col = booking_oct_col
+                                    st.session_state.cached_booking_dec_col = booking_dec_col
+                                    st.session_state.cached_booking_counts = (len(df_booking_before), len(df_booking_after))
+
+                            # Process Airbnb if both files provided
+                            if has_airbnb:
+                                df_airbnb_before = extract_airbnb_data_from_pdf(airbnb_before)
+                                df_airbnb_after = extract_airbnb_data_from_pdf(airbnb_after)
+                                if len(df_airbnb_before) > 0 and len(df_airbnb_after) > 0:
+                                    df_airbnb, airbnb_oct_col, airbnb_dec_col = create_comparison_df(
+                                        df_airbnb_before, df_airbnb_after, before_label, after_label
+                                    )
+                                    st.session_state.cached_airbnb_df = df_airbnb
+                                    st.session_state.cached_airbnb_oct_col = airbnb_oct_col
+                                    st.session_state.cached_airbnb_dec_col = airbnb_dec_col
+                                    st.session_state.cached_airbnb_counts = (len(df_airbnb_before), len(df_airbnb_after))
+
                             st.session_state.cached_period_label = f"{before_label} vs {after_label}"
-                            st.session_state.cached_before_count = len(df_before)
-                            st.session_state.cached_after_count = len(df_after)
+                            st.session_state.pdf_processed = True
+                            st.rerun()
 
-                    except Exception as e:
-                        st.error(f"Error processing PDFs: {str(e)}")
+                        except Exception as e:
+                            st.error(f"Error processing PDFs: {str(e)}")
+            else:
+                st.info("Upload at least one complete pair (before + after) for either Booking or Airbnb.")
 
-            # Use cached data
-            if 'cached_df' in st.session_state:
-                df = st.session_state.cached_df
-                oct_col = st.session_state.cached_oct_col
-                dec_col = st.session_state.cached_dec_col
-                period_label = st.session_state.cached_period_label
-                st.success(f"✓ Loaded {st.session_state.cached_before_count} + {st.session_state.cached_after_count} apartments (cached)")
+        # Data is ready - show platform selector and dashboard
+        if data_ready:
+            has_booking = 'cached_booking_df' in st.session_state
+            has_airbnb = 'cached_airbnb_df' in st.session_state
+
+            # Build platform options based on what's available
+            platform_options = []
+            if has_booking:
+                platform_options.append("Booking.com")
+            if has_airbnb:
+                platform_options.append("Airbnb")
+            if has_booking and has_airbnb:
+                platform_options.append("Both Platforms")
+
+            st.sidebar.markdown("---")
+            st.sidebar.title("Platform")
+            platform = st.sidebar.radio("Select Platform", platform_options)
+
+            # Show what's loaded
+            status_parts = []
+            if has_booking:
+                counts = st.session_state.cached_booking_counts
+                status_parts.append(f"Booking: {counts[0]}+{counts[1]}")
+            if has_airbnb:
+                counts = st.session_state.cached_airbnb_counts
+                status_parts.append(f"Airbnb: {counts[0]}+{counts[1]}")
+            st.success(f"✓ Loaded: {' | '.join(status_parts)}")
+
+            period_label = st.session_state.cached_period_label
+
+            # Set data based on platform selection
+            if platform == "Booking.com":
+                df = st.session_state.cached_booking_df
+                oct_col = st.session_state.cached_booking_oct_col
+                dec_col = st.session_state.cached_booking_dec_col
+                max_rating = 10
+                threshold = 5.0
+            elif platform == "Airbnb":
+                df = st.session_state.cached_airbnb_df
+                oct_col = st.session_state.cached_airbnb_oct_col
+                dec_col = st.session_state.cached_airbnb_dec_col
+                max_rating = 5
+                threshold = 3.0
+            else:  # Both Platforms
+                # Combine Booking and Airbnb data
+                df_booking = st.session_state.cached_booking_df.copy()
+                df_airbnb = st.session_state.cached_airbnb_df.copy()
+
+                booking_oct = st.session_state.cached_booking_oct_col
+                booking_dec = st.session_state.cached_booking_dec_col
+                airbnb_oct = st.session_state.cached_airbnb_oct_col
+                airbnb_dec = st.session_state.cached_airbnb_dec_col
+
+                # Normalize column names
+                df_booking = df_booking.rename(columns={booking_oct: 'Note Oct', booking_dec: 'Note Dec'})
+                df_booking['Platform'] = 'Booking.com'
+
+                # Normalize Airbnb to 0-10 scale
+                df_airbnb = df_airbnb.rename(columns={airbnb_oct: 'Note Oct', airbnb_dec: 'Note Dec'})
+                df_airbnb['Note Oct'] = df_airbnb['Note Oct'] * 2
+                df_airbnb['Note Dec'] = df_airbnb['Note Dec'] * 2
+                df_airbnb['Difference'] = df_airbnb['Difference'] * 2
+                df_airbnb['Platform'] = 'Airbnb'
+
+                df = pd.concat([df_booking, df_airbnb], ignore_index=True)
+                oct_col = "Note Oct"
+                dec_col = "Note Dec"
+                max_rating = 10
+                threshold = 5.0
         else:
-            st.info("Please upload both PDF files to generate the comparison.")
+            # No data yet, set defaults
+            platform = "Booking.com"
+            max_rating = 10
+            threshold = 5.0
 
     else:
-        # Use sample data
+        # Use sample data - show platform selector in sidebar
+        st.sidebar.markdown("---")
+        st.sidebar.title("Platform")
+        platform = st.sidebar.radio("Select Platform", ["Booking.com", "Airbnb", "Both Platforms"])
+
+        if platform == "Booking.com":
+            max_rating = 10
+            threshold = 5.0
+        elif platform == "Airbnb":
+            max_rating = 5
+            threshold = 3.0
+        else:
+            max_rating = 10
+            threshold = 5.0
+
         period_label = "October 2025 vs December 2025"
         if platform == "Booking.com":
             try:
