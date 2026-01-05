@@ -133,23 +133,44 @@ def extract_airbnb_data_from_pdf(pdf_file):
 
 def create_comparison_df(df_before, df_after, before_label, after_label):
     """Create comparison dataframe from two period dataframes."""
-    # Normalize name for matching (lowercase, strip whitespace, remove newlines)
+
     def normalize_name(nom):
         if pd.isna(nom):
             return None
-        # Normalize: lowercase, remove newlines, strip extra spaces
         return re.sub(r'\s+', ' ', str(nom).lower().strip())
+
+    def get_base_apt(ligne):
+        """Extract base apartment number: '2 A' -> '2', '157' -> '157'"""
+        if pd.isna(ligne):
+            return None
+        match = re.match(r'^(\d+)', str(ligne).strip())
+        return match.group(1) if match else str(ligne).strip()
 
     df_before = df_before.copy()
     df_after = df_after.copy()
+
+    # Add normalized name and base apartment number
     df_before['NormNom'] = df_before['Nom'].apply(normalize_name)
     df_after['NormNom'] = df_after['Nom'].apply(normalize_name)
+    df_before['BaseApt'] = df_before['Ligne'].apply(get_base_apt)
+    df_after['BaseApt'] = df_after['Ligne'].apply(get_base_apt)
 
-    # Merge on normalized name (most consistent across file formats)
+    # Check if names are "Apt X" format (old Airbnb format) - if so, match by BaseApt
+    before_has_apt_names = df_before['Nom'].str.startswith('Apt ').any()
+    after_has_apt_names = df_after['Nom'].str.startswith('Apt ').any()
+
+    if before_has_apt_names or after_has_apt_names:
+        # Match by base apartment number (for Airbnb old format compatibility)
+        merge_key = 'BaseApt'
+    else:
+        # Match by normalized name (for Booking and new format Airbnb)
+        merge_key = 'NormNom'
+
+    # Merge dataframes
     merged = pd.merge(
-        df_before[['Ligne', 'NormNom', 'Nom', 'Note', 'Comments']],
-        df_after[['NormNom', 'Ligne', 'Nom', 'Note', 'Comments']],
-        on='NormNom',
+        df_before[['Ligne', 'BaseApt', 'NormNom', 'Nom', 'Note', 'Comments']],
+        df_after[['BaseApt', 'NormNom', 'Ligne', 'Nom', 'Note', 'Comments']],
+        on=merge_key,
         how='outer',
         suffixes=(f' {before_label}', f' {after_label}')
     )
@@ -159,11 +180,13 @@ def create_comparison_df(df_before, df_after, before_label, after_label):
     nom_after = f'Nom {after_label}'
     ligne_before = f'Ligne {before_label}'
     ligne_after = f'Ligne {after_label}'
+    comments_before = f'Comments {before_label}'
+    comments_after = f'Comments {after_label}'
 
     def pick_best_name(row):
         name_b = row.get(nom_before, '')
         name_a = row.get(nom_after, '')
-        # Prefer non-"Apt X" names and newer format names
+        # Prefer non-"Apt X" names
         if pd.notna(name_a) and not str(name_a).startswith('Apt '):
             return name_a
         if pd.notna(name_b) and not str(name_b).startswith('Apt '):
@@ -184,6 +207,12 @@ def create_comparison_df(df_before, df_after, before_label, after_label):
 
     before_col = f'Note {before_label}'
     after_col = f'Note {after_label}'
+
+    # Rename comments columns to standard names
+    if comments_before in merged.columns:
+        merged['Comments Oct'] = merged[comments_before]
+    if comments_after in merged.columns:
+        merged['Comments Dec'] = merged[comments_after]
 
     # Calculate difference
     def calc_diff(row):
