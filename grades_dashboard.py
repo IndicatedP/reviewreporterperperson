@@ -29,15 +29,23 @@ def extract_booking_data_from_pdf(pdf_file):
             tables = page.extract_tables()
             for table in tables:
                 for row in table:
-                    if row and len(row) >= 3:
-                        # Look for rows with apartment data
-                        ligne = str(row[0]).strip() if row[0] else ''
-                        nom = str(row[1]).strip() if row[1] else ''
-                        note = str(row[2]).strip() if row[2] else ''
-                        comments = str(row[3]).strip() if len(row) > 3 and row[3] else '0'
+                    if row and len(row) >= 6:
+                        # PDF structure: Ligne | Avantio (A/B) | Name | Link | Comments | Notes
+                        ligne_num = str(row[0]).strip() if row[0] else ''
+                        avantio = str(row[1]).strip() if row[1] else ''
+                        nom = str(row[2]).strip() if row[2] else ''
+                        # row[3] is link - skip it
+                        comments = str(row[4]).strip() if row[4] else '0'
+                        note = str(row[5]).strip() if row[5] else ''
+
+                        # Combine ligne with avantio letter if present (e.g., "2 A", "2 B")
+                        if avantio and avantio not in ['-', '', 'None', 'LIGNE sur Avantio']:
+                            ligne = f"{ligne_num} {avantio}"
+                        else:
+                            ligne = ligne_num
 
                         # Skip header rows
-                        if ligne.lower() in ['ligne', 'line', ''] or nom.lower() in ['nom', 'name', '']:
+                        if ligne_num.lower() in ['ligne', 'line', '', 'tableau 1'] or nom.lower() in ['nom', 'name', 'noms', '']:
                             continue
 
                         # Try to parse note as float
@@ -68,13 +76,23 @@ def extract_airbnb_data_from_pdf(pdf_file):
             tables = page.extract_tables()
             for table in tables:
                 for row in table:
-                    if row and len(row) >= 3:
-                        ligne = str(row[0]).strip() if row[0] else ''
-                        nom = str(row[1]).strip() if row[1] else ''
-                        note = str(row[2]).strip() if row[2] else ''
-                        comments = str(row[3]).strip() if len(row) > 3 and row[3] else '0'
+                    if row and len(row) >= 7:
+                        # PDF structure: Compte | Appartement | Ligne (A/B) | Nom | Liens | Comments | Note Global | ...
+                        apt_num = str(row[1]).strip() if row[1] else ''
+                        ligne_suffix = str(row[2]).strip() if row[2] else ''
+                        nom = str(row[3]).strip() if row[3] else ''
+                        # row[4] is link - skip it
+                        comments = str(row[5]).strip() if row[5] else '0'
+                        note = str(row[6]).strip() if row[6] else ''
 
-                        if ligne.lower() in ['ligne', 'line', ''] or nom.lower() in ['nom', 'name', '']:
+                        # Combine apartment number with suffix if present (e.g., "2 A", "2 B")
+                        if ligne_suffix and ligne_suffix not in ['-', '', 'None', 'LIGNE']:
+                            ligne = f"{apt_num} {ligne_suffix}"
+                        else:
+                            ligne = apt_num
+
+                        # Skip header rows
+                        if apt_num.lower() in ['appartement', 'ligne', '', 'tableau 1'] or nom.lower() in ['nom', 'name', 'noms', '']:
                             continue
 
                         try:
